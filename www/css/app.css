@@ -84,4 +84,39 @@
 	font-family: 'Poppins', Arial, sans-serif;
 }
 
+.centrado>li,.centrado2>li{
+  text-align: center;
+  justify-content: center;
+}
+.centrado2{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
 
+.centrado2>li>input{
+  text-align: center;
+  justify-content: center;
+  width: 150px;
+}
+
+#btnSalir,#btnComenzar{
+  width: 70%;
+}
+
+#superior,#dados{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+#dados>p{
+  font-size: 25px;
+  font-weight: 400;
+  margin-right: 6px;
+}
+
+.retenido{
+  color: red;
+}
