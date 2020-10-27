@@ -1,6 +1,9 @@
   
 // If we need to use custom DOM library, let's save it to $$ variable:
 var $$ = Dom7;
+var x = ['1','2','3','4','5','6']
+
+var temporal;
 
 var app = new Framework7({
     // App root element
@@ -16,29 +19,60 @@ var app = new Framework7({
     // Add default routes
     routes: [
       {
-        path: '/about/',
-        url: 'about.html',
+        path: '/index/',
+        url: 'index.html',
+      },
+      {
+        path: '/pagina1/',
+        url: 'pagina1.html',
       },
     ]
     // ... other parameters
   });
+
+
+
 
 var mainView = app.views.create('.view-main');
 
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function() {
     console.log("Device is ready!");
+  
+
 });
 
-// Option 1. Using one 'page:init' handler for all pages
-$$(document).on('page:init', function (e) {
-    // Do something here when page loaded and initialized
-    console.log(e);
-})
 
-// Option 2. Using live 'page:init' event handlers for each page
-$$(document).on('page:init', '.page[data-name="about"]', function (e) {
+$$(document).on('page:init', '.page[data-name="pagina1"]', function (e) {
     // Do something here when page with data-name="about" attribute loaded and initialized
     console.log(e);
-    alert('Hello');
-})
+    $$('.popover-about').on('popover:open', function (e) {
+      console.log('About popover open');
+    });
+    $$('.popover-about').on('popover:opened', function (e) {
+      console.log('About popover opened');
+    });
+
+    $$('.dado').on('click', function() {
+     x = $$(this).attr('id')
+     
+     console.log(x)
+      
+    })
+    
+    
+   
+    
+    })
+        
+ 
+
+    
+    
+
+  
+
+
+   
+
+
