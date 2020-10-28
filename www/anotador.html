@@ -1,0 +1,119 @@
+<!-- We don't need a full layout in this file because this page will be parsed with Ajax.  -->
+<div class="page" data-name="anotador">
+    <div class="page-content">
+
+        <!-- Info de la partida -->
+        <div id="superior">
+            <div class="centrado2" id="info"></div>
+            <div class="centrado2">
+                <div id="dados">
+                    <p id="dado0">| - |</p>
+                    <p id="dado1">| - |</p>
+                    <p id="dado2">| - |</p>
+                    <p id="dado3">| - |</p>
+                    <p id="dado4">| - |</p>
+                </div>
+                <input type="button" id="btnTirar" value="Tirar Dados">
+            </div>
+        </div>
+
+        <!-- Tablero en 3 columnas de igual ancho -->
+        <div class="row no-gap">
+            <div class="col-33">
+                <div class="list simple-list">
+                  <ul class="centrado">
+                    <li>JUGADA</li>
+                    <li>< 1 ></li>
+                    <li>< 2 ></li>
+                    <li>< 3 ></li>
+                    <li>< 4 ></li>
+                    <li>< 5 ></li>
+                    <li>< 6 ></li>
+                    <li>Escalera</li>
+                    <li>Full</li>
+                    <li>Poker</li>
+                    <li>Generala</li>
+                    <li>Doble Gen.</li>
+                    <li>Total --></li>
+                  </ul>
+                </div>
+            </div>
+            <div class="col-33">
+                <div class="list simple-list">
+                  <ul id="playerA" class="centrado"></ul>
+                </div>
+            </div>
+            <div class="col-33">
+                <div class="list simple-list">
+                  <ul id="playerB" class="centrado"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Link al index -->
+        <center>
+        <button class="col button button-raised popover-open" id="btnSalir" data-popover=".popoverSalir">SALIR</button>
+        <br>
+        </center>
+
+        <!-- popovers -->
+        <div class="popover popoverNumeros">
+            <div class="popover-inner">
+                <div class="list">
+                    <ul class="centrado2">
+                        <li><p>¿Cuantos dados iguales?</p></li>
+                        <li><input type="button" value="1" class="list-button item-link popover-close " id="valor"></li>
+                        <li><input type="button" value="2" class="list-button item-link popover-close " id="valor1"></li>
+                        <li><input type="button" value="3" class="list-button item-link popover-close " id="valor2"></li>
+                        <li><input type="button" value="4" class="list-button item-link popover-close " id="valor3"></li>
+                        <li><input type="button" value="5" class="list-button item-link popover-close " id="valor4"></li>
+                        <li><input type="button" value="Tachar" class="list-button item-link popover-close" id="tachar"></li>
+                        <br>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="popover popoverJugadas">
+            <div class="popover-inner">
+                <div class="list">
+                    <ul class="centrado2">
+                        <li><p>¿Que tipo de jugada es?</p></li>
+                        <li><input type="button" value="Armada" class="list-button item-link popover-close" ></li>
+                        <li><input type="button" value="Servida" class="list-button item-link popover-close" ></li>
+                        <li><input type="button" value="Tachar" class="list-button item-link popover-close" ></li>
+                        <br>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="popover popoverSalir">
+            <div class="popover-inner">
+                <div class="list">
+                    <ul class="centrado2">
+                        <li><p>¿Que quieres hacer?</p></li>
+                        <li><input type="button" value="Cancelar" class="list-button item-link popover-close"></li>
+                        <li><input type="button" value="Reiniciar Puntos" class="list-button item-link popover-close"></li>
+                        <li><a href="/index/"><input type="button" value="Salir" class="list-button item-link popover-close"></a></li>
+                        <br>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="popover popoverFinPartida">
+            <div class="popover-inner">
+                <div class="list">
+                    <ul class="centrado2">
+                        <li><p>Felicitaciones</p></li>
+                        <li><p>a puntos vs b puntos</p></li>
+                        <li><input type="button" value="Jugar de Nuevo" class="list-button item-link popover-close"></li>
+                        <li><a href="/index/"><input type="button" value="Salir" class="list-button item-link popover-close"></a></li>
+                        <br>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Link al index    <a href="/index/"></a>   -->
