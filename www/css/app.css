@@ -106,8 +106,8 @@
   margin: 2px;
 }
 
-#btnSalir,#btnComenzar{
-  width: 50%;
+#btnSalir,#btnComenzar,#btnCtrlZ{
+  width: 48%;
 }
 
 #superior,#dados{
@@ -160,16 +160,31 @@ h3{
 }
 
 .visible{
-  border-radius: 10px;
-  background-color: #2993E9;
   display: block;
   visibility: visible;
-  position:relative;
-  top:-600px;
-  z-index:9999;
-  padding: 5px;
 }
 #ulFin{
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 10px;
+  width: 300px;
+  height: 300px;
+}
+
+#overlay{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.botonera{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }

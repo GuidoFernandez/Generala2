@@ -3,8 +3,8 @@
 var $$ = Dom7;
 var A=[];
 var B=[];
-var x, Aw, Bw, partida=1;
-var d=[0,0,0,0,0], r=0, tiro=0;
+var idPuntos, idUltimo, Aw, Bw, partida=1;
+var d=[0,0,0,0,0], tiro=0;
 
 var app = new Framework7({
     // App root element
@@ -63,11 +63,12 @@ $$(document).on('page:init', '.page[data-name="anotador"]', function () {
     $$('#dado3').on('click',function(){selectDados(3)});
     $$('#dado4').on('click',function(){selectDados(4)});
     /* control del tablero */
-    $$('.puntos').on('click',function(){x=this.id;console.log(x)});
+    $$('.puntos').on('click',function(){idPuntos=this.id;console.log(idPuntos)});
     $$('.tipoD').on('click',function(){anotarD(this.value)});
     $$('.tipoJ').on('click',function(){anotarJ(this.value)});
     $$('#reiniciar').on('click',reset).on('click',refrescaTablero);
     $$('#nuevaPartida').on('click',nuevaPar);
+    $$('#btnCtrlZ').on('click',deshacer);
 })
 
 /* Declaracion de las funciones del tablero */
@@ -106,12 +107,12 @@ function calculaTotal(){
 
 function refrescaTablero(){
     for(i=1; i<7; i++){
-        $$('#AD'+i).html(''+A[i]);
-        $$('#BD'+i).html(''+B[i]);
+        $$('#AD'+i).html(A[i]);
+        $$('#BD'+i).html(B[i]);
     }
     for(i=7; i<12; i++){
-        $$('#AJ'+(i-6)).html(''+A[i]);
-        $$('#BJ'+(i-6)).html(''+B[i]);
+        $$('#AJ'+(i-6)).html(A[i]);
+        $$('#BJ'+(i-6)).html(B[i]);
     }
     $$('#AT').html(A[12]);
     $$('#BT').html(B[12]);
@@ -128,31 +129,41 @@ function reset(){
     for(i=1; i<12; i++){
         A[i]=B[i]='-';
     }
+    for(i=1; i<7; i++){
+        $$('#AD'+i).addClass('popover-open');
+        $$('#BD'+i).addClass('popover-open');
+    }
+    for(i=7; i<12; i++){
+        $$('#AJ'+(i-6)).addClass('popover-open');
+        $$('#BJ'+(i-6)).addClass('popover-open');
+    }
 }
 
 function anotarD(value){
-    m=parseInt(x[2]);
+    m=parseInt(idPuntos[2]);
     if(value=='Tachar'){
-        if(x[0]=='A'){
+        if(idPuntos[0]=='A'){
             A[m]='X';
         }else{
             B[m]='X';
         }
     }else{
-        if(x[0]=='A'){
+        if(idPuntos[0]=='A'){
             A[m]=m*parseInt(value);
         }else{
             B[m]=m*parseInt(value);
         }
     }
+    idUltimo=idPuntos;
+    $$('#'+idPuntos).removeClass('popover-open');
     calculaTotal();
     refrescaTablero();
 }
 
 function anotarJ(value){
-    m=parseInt(x[2]);
+    m=parseInt(idPuntos[2]);
     if(value=='Tachar'){
-        if(x[0]=='A'){
+        if(idPuntos[0]=='A'){
             A[m+6]='X';
         }else{
             B[m+6]='X';
@@ -160,26 +171,28 @@ function anotarJ(value){
     }else{
         s=(value=='Servida')?5:0;
         switch(m){
-            case 1:if(x[0]=='A'){A[m+6]=20+s;}else{B[m+6]=20+s;} break;
-            case 2:if(x[0]=='A'){A[m+6]=30+s;}else{B[m+6]=30+s;} break;
-            case 3:if(x[0]=='A'){A[m+6]=40+s;}else{B[m+6]=40+s;} break;
-            case 4:if(x[0]=='A'){A[m+6]=50+s;}else{B[m+6]=50+s;} break;
-            case 5:if(x[0]=='A'){A[m+6]=100+s;}else{B[m+6]=100+s;} break;
+            case 1:if(idPuntos[0]=='A'){A[m+6]=20+s;}else{B[m+6]=20+s;} break;
+            case 2:if(idPuntos[0]=='A'){A[m+6]=30+s;}else{B[m+6]=30+s;} break;
+            case 3:if(idPuntos[0]=='A'){A[m+6]=40+s;}else{B[m+6]=40+s;} break;
+            case 4:if(idPuntos[0]=='A'){A[m+6]=50+s;}else{B[m+6]=50+s;} break;
+            case 5:if(idPuntos[0]=='A'){A[m+6]=100+s;}else{B[m+6]=100+s;} break;
         }
     }
+    idUltimo=idPuntos;
+    $$('#'+idPuntos).removeClass('popover-open');
     calculaTotal();
     refrescaTablero();
 }
 
 function verificarGanador(){
     k=0;
-    for(i=0; i<12; i++){
+    for(i=1; i<12; i++){
         if(A[i]=='-' || B[i]=='-'){
             k++;
         }
     }
     if(k==0){
-        $$('#menuFin').removeClass('oculto').addClass('visible');
+        $$('#overlay').removeClass('oculto').addClass('visible');
         if(A[12]==B[12]){
             $$('#ganador').html('Es un EMPATE');
             return;
@@ -201,7 +214,27 @@ function nuevaPar(){
     refrescaTablero();
     partida++;
     infoPartida();
-    $$('#menuFin').removeClass('visible').addClass('oculto');
+    $$('#overlay').removeClass('visible').addClass('oculto');
+}
+
+function deshacer(){
+    m=parseInt(idUltimo[2]);
+    if(idUltimo[0]=='A'){
+        if(idUltimo[1]=='D'){
+            A[m]='-';
+        }else{
+            A[m+6]='-';
+        }
+    }else{
+        if(idUltimo[1]=='D'){
+            B[m]='-';
+        }else{
+            B[m+6]='-';
+        }
+    }
+    $$('#'+idPuntos).addClass('popover-open');
+    calculaTotal();
+    refrescaTablero();
 }
 
 /* Declaracion de las funciones de los dados */
@@ -209,12 +242,10 @@ function tirarDados(){
     if($$('#btnTirar').val()=='RESET'){
         for(i=0; i<5; i++){
             $$('#dado'+i).html('|-|');
+            $$('#dado'+i).removeClass('retenido');
         }
         $$('#btnTirar').val('Tirar Dados').css('color','black');
         tiro=0;
-        for(i=0; i<5; i++){
-            $$('#dado'+i).removeClass('retenido');
-        }
         return;
     }
     if(tiro<3){
@@ -237,10 +268,8 @@ function selectDados(y){
     }
     if(! $$('#dado'+y).hasClass('retenido')){
         $$('#dado'+y).removeClass('libre').addClass('retenido');
-        r++;
     }else{
         $$('#dado'+y).removeClass('retenido').addClass('libre');
-        r--;
     }
 }
 

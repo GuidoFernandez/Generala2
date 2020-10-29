@@ -51,10 +51,11 @@
         </div>
 
         <!-- Link al index -->
-        <center>
+        <div class="botonera">
         <button class="col button button-raised popover-open" id="btnSalir" data-popover=".popoverSalir">FINALIZAR</button>
+        <button class="col button button-raised" id="btnCtrlZ">ctrl+z</button>
         <br>
-        </center>
+        </div>
 
         <!-- popovers -->
         <div class="popover popoverNumeros">
@@ -101,14 +102,16 @@
         </div>
 
          <!-- Menu oculto de fin de partida -->
-        <div id="menuFin" class="list oculto">
-            <ul id="ulFin" class="centrado2">
-                <li><h2 id="ganador"></h2></li>
-                <li><h3 id="score"></h3></li>
-                <li><input id="nuevaPartida" type="button" value="Nueva Partida" class="button button-raised"></li>
-                <li><a href="/index/"><input id="fin" type="button" value="Finalizar Juego" class="button button-raised"></a></li>
-                <br>
-            </ul>
+        <div id="overlay" class="oculto">
+            <div id="menuFin" class="list">
+                <ul id="ulFin" class="centrado2">
+                    <li><h2 id="ganador"></h2></li>
+                    <li><h3 id="score"></h3></li>
+                    <li><input id="nuevaPartida" type="button" value="Nueva Partida" class="button button-raised"></li>
+                    <li><a href="/index/"><input id="fin" type="button" value="Finalizar Juego" class="button button-raised"></a></li>
+                    <br>
+                </ul>
+            </div>
         </div>
 
     </div>
