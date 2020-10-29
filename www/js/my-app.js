@@ -1,12 +1,9 @@
-  
 // If we need to use custom DOM library, let's save it to $$ variable:
 var $$ = Dom7;
-var A=['Jugador A','-','-','-','-','-','-','-','-','-','-','-',0];
-var B=['Jugador B','-','-','-','-','-','-','-','-','-','-','-',0];
-var x='', Aw=0, Bw=0, partida=1;
-var d=[0,1,2,3,4], r=0, tiro=0;
-var valor1=0
-var resultado
+var A=[];
+var B=[];
+var idPuntos, idUltimo, Aw, Bw, partida=1;
+var d=[0,0,0,0,0], tiro=0;
 
 var app = new Framework7({
     // App root element
@@ -49,138 +46,234 @@ $$(document).on('page:init', '.page[data-name="index"]', function () {
 
 $$(document).on('page:init', '.page[data-name="anotador"]', function () {
     console.log('estoy en el anotador');
-    // si se ingresó nombre, lo guarda, de lo contrario queda el nombre por defecto
-    /////////////////////////////
+    /* inicializar tablero */
+    A[0]='JugadorA';
+    B[0]='JugadorB';
+    Aw=Bw=tiro=0;
+    partida=1;
+    reset();
+    infoPartida();
+    crearTablero();
+    /* Control de los dados */
+    $$('#btnTirar').on('click',tirarDados);
+    $$('#dado0').on('click',function(){selectDados(0)});
+    $$('#dado1').on('click',function(){selectDados(1)});
+    $$('#dado2').on('click',function(){selectDados(2)});
+    $$('#dado3').on('click',function(){selectDados(3)});
+    $$('#dado4').on('click',function(){selectDados(4)});
+    /* control del tablero */
+    $$('.puntos').on('click',function(){idPuntos=this.id;console.log(idPuntos)});
+    $$('.tipoD').on('click',function(){anotarD(this.value)});
+    $$('.tipoJ').on('click',function(){anotarJ(this.value)});
+    $$('#reiniciar').on('click',reset).on('click',refrescaTablero);
+    $$('#nuevaPartida').on('click',nuevaPar);
+    $$('#btnCtrlZ').on('click',deshacer);
+})
+
+/* Declaracion de las funciones del tablero */
+
+function crearTablero(){
+    $$('#playerA').append('<li class="masFuerte">'+A[0]+'</li>');
+    $$('#playerB').append('<li class="masFuerte">'+B[0]+'</li>');
+    for(i=1; i<7; i++){
+        $$('#playerA').append('<li data-popover=".popoverNumeros" class="popover-open puntos" id="AD'+i+'"> '+A[i]+' </li>');
+        $$('#playerB').append('<li data-popover=".popoverNumeros" class="popover-open puntos" id="BD'+i+'"> '+B[i]+' </li>');
+    }
+    for(i=7; i<12; i++){
+        $$('#playerA').append('<li data-popover=".popoverJugadas" class="popover-open puntos" id="AJ'+(i-6)+'"> '+A[i]+' </li>');
+        $$('#playerB').append('<li data-popover=".popoverJugadas" class="popover-open puntos" id="BJ'+(i-6)+'"> '+B[i]+' </li>');
+    }
+    $$('#playerA').append('<li class="masFuerte" id="AT">'+A[12]+'</li>');
+    $$('#playerB').append('<li class="masFuerte" id="BT">'+B[12]+'</li>');
+}
+
+function infoPartida(){
+    $$('#info').html('<h3 class="masFuerte">Partida # '+partida+'</h3><h3>'+A[0]+': '+Aw+'</h3><h3>'+B[0]+': '+Bw+'</h3>');
+}
+
+function calculaTotal(){
+    A[12]=B[12]=0;
+    for(i=1; i<12; i++){
+        if(A[i]!='-' && A[i]!='X'){
+            A[12]+=parseInt(A[i]);
+        }
+        if(B[i]!='-' && B[i]!='X'){
+            B[12]+=parseInt(B[i]);
+        }
+    }
+    verificarGanador();
+}
+
+function refrescaTablero(){
+    for(i=1; i<7; i++){
+        $$('#AD'+i).html(A[i]);
+        $$('#BD'+i).html(B[i]);
+    }
+    for(i=7; i<12; i++){
+        $$('#AJ'+(i-6)).html(A[i]);
+        $$('#BJ'+(i-6)).html(B[i]);
+    }
+    $$('#AT').html(A[12]);
+    $$('#BT').html(B[12]);
+}
+
+function reset(){
     if($$('#nameA').val()){
         A[0]=$$('#nameA').val();
     }
     if($$('#nameB').val()){
         B[0]=$$('#nameB').val();
     }
-    /////////////////////////////
-    infoPartida();
-    llenarTablero();
-    ////////////////////////////
-    $$('#btnTirar').on('click',tirarDados)
-    $$('#dado0').on('click',function(){selectDados(0)})
-    $$('#dado1').on('click',function(){selectDados(1)})
-    $$('#dado2').on('click',function(){selectDados(2)})
-    $$('#dado3').on('click',function(){selectDados(3)})
-    $$('#dado4').on('click',function(){selectDados(4)})
-    ////////////////////////////
-    $$('.numero,.jugada').on('click',function(){x=this.id;console.log(x)});
-    //recuperar el valor de la tirada
-    $$('#valor').on('click', fnrecuperarvalor);
-     //recuperar el valor de la tirada
-     $$('#valor1').on('click', fnrecuperarvalor1);
-      //recuperar el valor de la tirada
-      $$('#valor2').on('click', fnrecuperarvalor2);
-       //recuperar el valor de la tirada
-     $$('#valor3').on('click', fnrecuperarvalor3);
-      //recuperar el valor de la tirada
-      $$('#valor4').on('click', fnrecuperarvalor4);
-       //recuperar el valor de la tirada
-     $$('#tachar').on('click', fnrecuperartachar);
-})
-
-function llenarTablero(){
-    $$('#playerA').append('<li>'+A[0]+'</li>');
-    $$('#playerB').append('<li>'+B[0]+'</li>');
+    A[12]=B[12]=0;
+    for(i=1; i<12; i++){
+        A[i]=B[i]='-';
+    }
     for(i=1; i<7; i++){
-        $$('#playerA').append('<li data-popover=".popoverNumeros" class="popover-open numero" id="AD'+i+'"> '+A[i]+' </li>');
-        $$('#playerB').append('<li data-popover=".popoverNumeros" class="popover-open numero" id="BD'+i+'"> '+B[i]+' </li>');
+        $$('#AD'+i).addClass('popover-open');
+        $$('#BD'+i).addClass('popover-open');
     }
     for(i=7; i<12; i++){
-        $$('#playerA').append('<li data-popover=".popoverJugadas" class="popover-open jugada" id="AJ'+(i-6)+'"> '+A[i]+' </li>');
-        $$('#playerB').append('<li data-popover=".popoverJugadas" class="popover-open jugada" id="BJ'+(i-6)+'"> '+B[i]+' </li>');
+        $$('#AJ'+(i-6)).addClass('popover-open');
+        $$('#BJ'+(i-6)).addClass('popover-open');
     }
-    $$('#playerA').append('<li>'+A[12]+'</li>');
-    $$('#playerB').append('<li>'+B[12]+'</li>');
 }
 
-function infoPartida(){
-    $$('#info').html('<h2>Partida # '+partida+'</h2><h3>'+A[0]+': '+Aw+' | '+B[0]+': '+Bw+'</h3>');
+function anotarD(value){
+    m=parseInt(idPuntos[2]);
+    if(value=='Tachar'){
+        if(idPuntos[0]=='A'){
+            A[m]='X';
+        }else{
+            B[m]='X';
+        }
+    }else{
+        if(idPuntos[0]=='A'){
+            A[m]=m*parseInt(value);
+        }else{
+            B[m]=m*parseInt(value);
+        }
+    }
+    idUltimo=idPuntos;
+    $$('#'+idPuntos).removeClass('popover-open');
+    calculaTotal();
+    refrescaTablero();
 }
 
+function anotarJ(value){
+    m=parseInt(idPuntos[2]);
+    if(value=='Tachar'){
+        if(idPuntos[0]=='A'){
+            A[m+6]='X';
+        }else{
+            B[m+6]='X';
+        }
+    }else{
+        s=(value=='Servida')?5:0;
+        switch(m){
+            case 1:if(idPuntos[0]=='A'){A[m+6]=20+s;}else{B[m+6]=20+s;} break;
+            case 2:if(idPuntos[0]=='A'){A[m+6]=30+s;}else{B[m+6]=30+s;} break;
+            case 3:if(idPuntos[0]=='A'){A[m+6]=40+s;}else{B[m+6]=40+s;} break;
+            case 4:if(idPuntos[0]=='A'){A[m+6]=50+s;}else{B[m+6]=50+s;} break;
+            case 5:if(idPuntos[0]=='A'){A[m+6]=100+s;}else{B[m+6]=100+s;} break;
+        }
+    }
+    idUltimo=idPuntos;
+    $$('#'+idPuntos).removeClass('popover-open');
+    calculaTotal();
+    refrescaTablero();
+}
 
+function verificarGanador(){
+    k=0;
+    for(i=1; i<12; i++){
+        if(A[i]=='-' || B[i]=='-'){
+            k++;
+        }
+    }
+    if(k==0){
+        $$('#overlay').removeClass('oculto').addClass('visible');
+        if(A[12]==B[12]){
+            $$('#ganador').html('Es un EMPATE');
+            return;
+        }else if(A[12]>B[12]){
+            ganador=A[0];
+            Aw++;
+        }else{
+            ganador=B[0];
+            Bw++;
+        }
+        $$('#ganador').html('Ganador: '+ganador);
+        $$('#score').html(A[0]+': '+Aw+' . '+B[0]+': '+Bw);
+    }
+    infoPartida();
+}
 
+function nuevaPar(){
+    reset();
+    refrescaTablero();
+    partida++;
+    infoPartida();
+    $$('#overlay').removeClass('visible').addClass('oculto');
+}
 
-///////////////////////////////////// Funciones para los dados /////////////////////////////////////////////
+function deshacer(){
+    m=parseInt(idUltimo[2]);
+    if(idUltimo[0]=='A'){
+        if(idUltimo[1]=='D'){
+            A[m]='-';
+        }else{
+            A[m+6]='-';
+        }
+    }else{
+        if(idUltimo[1]=='D'){
+            B[m]='-';
+        }else{
+            B[m+6]='-';
+        }
+    }
+    $$('#'+idPuntos).addClass('popover-open');
+    calculaTotal();
+    refrescaTablero();
+}
+
+/* Declaracion de las funciones de los dados */
 function tirarDados(){
-    if($$('#btnTirar').val()=='Nueva Jugada'){
+    if($$('#btnTirar').val()=='RESET'){
         for(i=0; i<5; i++){
-            $$('#dado'+i).html('| - |')
+            $$('#dado'+i).html('|-|');
+            $$('#dado'+i).removeClass('retenido');
         }
-        $$('#btnTirar').val('Tirar Dados').css('color','black')
-        tiro=0
-        for(i=0; i<5; i++){
-            $$('#dado'+i).removeClass('retenido')
-        }
-        return
+        $$('#btnTirar').val('Tirar Dados').css('color','black');
+        tiro=0;
+        return;
     }
     if(tiro<3){
         for(i=0; i<5; i++){
             if(!$$('#dado'+i).hasClass('retenido')){
-                d[i]=parseInt(Math.random()*6+1)
+                d[i]=parseInt(Math.random()*6+1);
             }
         }
     }
     if(tiro==2){
-        $$('#btnTirar').val('Nueva Jugada').css('color','red')
+        $$('#btnTirar').val('RESET').css('color','red');
     }
-    tiro++
-    mostrarDados()
+    tiro++;
+    mostrarDados();
 }
 
 function selectDados(y){
+    if(tiro==0){
+        return;
+    }
     if(! $$('#dado'+y).hasClass('retenido')){
-        $$('#dado'+y).removeClass('libre').addClass('retenido')
-        r++
+        $$('#dado'+y).removeClass('libre').addClass('retenido');
     }else{
-        $$('#dado'+y).removeClass('retenido').addClass('libre')
-        r--
+        $$('#dado'+y).removeClass('retenido').addClass('libre');
     }
 }
 
 function mostrarDados(){
     for(i=0; i<5; i++){
-        $$('#dado'+i).html('| '+d[i]+' |')
+        $$('#dado'+i).html('|'+d[i]+'|');
     }
-}
-
-function fnrecuperarvalor(){
-    valor1=$$('#valor').val();
-    
-    console.log(valor1)
-    
-}
-function fnrecuperarvalor1(){
-    valor1=$$('#valor1').val();
-
-    console.log(valor1)
-    
-}
-function fnrecuperarvalor2(){
-    valor1=$$('#valor2').val();
-
-    console.log(valor1)
-    
-}
-function fnrecuperarvalor3(){
-    valor1=$$('#valor3').val();
-
-    console.log(valor1)
-    
-}
-function fnrecuperarvalor4(){
-    valor1=$$('#valor4').val();
-
-    console.log(valor1)
-    
-}
-function fnrecuperartachar(){
-    valor1=$$('#tachar').val();
-
-    console.log(valor1)
-    
 }

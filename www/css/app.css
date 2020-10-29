@@ -1,5 +1,8 @@
 /* Your app custom styles here */
 /* poppins-regular - latin */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&display=swap');
+
 @font-face {
   font-family: 'Poppins';
   font-style: normal;
@@ -95,14 +98,16 @@
   align-items: center;
 }
 
-.centrado2>li>input{
+.centrado2>li>input, .centrado2>li>a>input{
   text-align: center;
   justify-content: center;
-  width: 150px;
+  width: 180px;
+  height: 50px;
+  margin: 2px;
 }
 
-#btnSalir,#btnComenzar{
-  width: 70%;
+#btnSalir,#btnComenzar,#btnCtrlZ{
+  width: 48%;
 }
 
 #superior,#dados{
@@ -111,12 +116,75 @@
   justify-content: space-around;
 }
 
+#superior{
+  background-color: #2993E9;
+}
+
 #dados>p{
-  font-size: 25px;
-  font-weight: 400;
-  margin-right: 6px;
+  background-color: white;
+  font-family: 'Fira Code', monospace;
+  font-size: 26px;
+  margin: 0px 2px;
+  padding: 0px;
 }
 
 .retenido{
   color: red;
+  font-weight: 800;
+}
+
+#btnTirar{
+  background-color: white;
+  color: black;
+  font-weight: 600;
+}
+
+.masFuerte{
+  font-weight: 600;
+}
+
+h3{
+  font-weight: 200;
+  margin: 3px 0px;
+  padding: 0;
+}
+
+#nuevaPartida,#fin{
+  width: 200px;
+  height: 50px;
+}
+
+.oculto{
+  display: none;
+  visibility: hidden;
+}
+
+.visible{
+  display: block;
+  visibility: visible;
+}
+#ulFin{
+  border-radius: 5px;
+  padding: 10px;
+  width: 300px;
+  height: 300px;
+}
+
+#overlay{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.botonera{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }

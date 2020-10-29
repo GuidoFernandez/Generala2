@@ -4,16 +4,16 @@
 
         <!-- Info de la partida -->
         <div id="superior">
-            <div class="centrado2" id="info"></div>
-            <div class="centrado2">
+            <div class="col centrado2" id="info"></div>
+            <div class="col centrado2">
                 <div id="dados">
-                    <p id="dado0">| - |</p>
-                    <p id="dado1">| - |</p>
-                    <p id="dado2">| - |</p>
-                    <p id="dado3">| - |</p>
-                    <p id="dado4">| - |</p>
+                    <p id="dado0">|-|</p>
+                    <p id="dado1">|-|</p>
+                    <p id="dado2">|-|</p>
+                    <p id="dado3">|-|</p>
+                    <p id="dado4">|-|</p>
                 </div>
-                <input type="button" id="btnTirar" value="Tirar Dados">
+                <input class="col button button-raised" type="button" id="btnTirar" value="Tirar Dados">
             </div>
         </div>
 
@@ -51,10 +51,11 @@
         </div>
 
         <!-- Link al index -->
-        <center>
-        <button class="col button button-raised popover-open" id="btnSalir" data-popover=".popoverSalir">SALIR</button>
+        <div class="botonera">
+        <button class="col button button-raised popover-open" id="btnSalir" data-popover=".popoverSalir">FINALIZAR</button>
+        <button class="col button button-raised" id="btnCtrlZ">ctrl+z</button>
         <br>
-        </center>
+        </div>
 
         <!-- popovers -->
         <div class="popover popoverNumeros">
@@ -62,12 +63,12 @@
                 <div class="list">
                     <ul class="centrado2">
                         <li><p>¿Cuantos dados iguales?</p></li>
-                        <li><input type="button" value="1" class="list-button item-link popover-close " id="valor"></li>
-                        <li><input type="button" value="2" class="list-button item-link popover-close " id="valor1"></li>
-                        <li><input type="button" value="3" class="list-button item-link popover-close " id="valor2"></li>
-                        <li><input type="button" value="4" class="list-button item-link popover-close " id="valor3"></li>
-                        <li><input type="button" value="5" class="list-button item-link popover-close " id="valor4"></li>
-                        <li><input type="button" value="Tachar" class="list-button item-link popover-close" id="tachar"></li>
+                        <li><input type="button" value="1" class="tipoD list-button item-link popover-close"></li>
+                        <li><input type="button" value="2" class="tipoD list-button item-link popover-close"></li>
+                        <li><input type="button" value="3" class="tipoD list-button item-link popover-close"></li>
+                        <li><input type="button" value="4" class="tipoD list-button item-link popover-close"></li>
+                        <li><input type="button" value="5" class="tipoD list-button item-link popover-close"></li>
+                        <li><input type="button" value="Tachar" class="tipoD list-button item-link popover-close"></li>
                         <br>
                     </ul>
                 </div>
@@ -78,9 +79,9 @@
                 <div class="list">
                     <ul class="centrado2">
                         <li><p>¿Que tipo de jugada es?</p></li>
-                        <li><input type="button" value="Armada" class="list-button item-link popover-close" ></li>
-                        <li><input type="button" value="Servida" class="list-button item-link popover-close" ></li>
-                        <li><input type="button" value="Tachar" class="list-button item-link popover-close" ></li>
+                        <li><input type="button" value="Armada" class=" tipoJ list-button item-link popover-close"></li>
+                        <li><input type="button" value="Servida" class=" tipoJ list-button item-link popover-close"></li>
+                        <li><input type="button" value="Tachar" class=" tipoJ list-button item-link popover-close"></li>
                         <br>
                     </ul>
                 </div>
@@ -92,24 +93,24 @@
                     <ul class="centrado2">
                         <li><p>¿Que quieres hacer?</p></li>
                         <li><input type="button" value="Cancelar" class="list-button item-link popover-close"></li>
-                        <li><input type="button" value="Reiniciar Puntos" class="list-button item-link popover-close"></li>
-                        <li><a href="/index/"><input type="button" value="Salir" class="list-button item-link popover-close"></a></li>
+                        <li><input id="reiniciar" type="button" value="Reiniciar Puntos" class="list-button item-link popover-close"></li>
+                        <li><a href="/index/"><input type="button" value="Finalizar Juego" class="list-button item-link popover-close"></a></li>
                         <br>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="popover popoverFinPartida">
-            <div class="popover-inner">
-                <div class="list">
-                    <ul class="centrado2">
-                        <li><p>Felicitaciones</p></li>
-                        <li><p>a puntos vs b puntos</p></li>
-                        <li><input type="button" value="Jugar de Nuevo" class="list-button item-link popover-close"></li>
-                        <li><a href="/index/"><input type="button" value="Salir" class="list-button item-link popover-close"></a></li>
-                        <br>
-                    </ul>
-                </div>
+
+         <!-- Menu oculto de fin de partida -->
+        <div id="overlay" class="oculto">
+            <div id="menuFin" class="list">
+                <ul id="ulFin" class="centrado2">
+                    <li><h2 id="ganador"></h2></li>
+                    <li><h3 id="score"></h3></li>
+                    <li><input id="nuevaPartida" type="button" value="Nueva Partida" class="button button-raised"></li>
+                    <li><a href="/index/"><input id="fin" type="button" value="Finalizar Juego" class="button button-raised"></a></li>
+                    <br>
+                </ul>
             </div>
         </div>
 
